@@ -1,4 +1,3 @@
-<!-- 
 # DevStudyNotes.API
  Esta API manipula as notas de estudo de alunos.
 
@@ -431,14 +430,3 @@ public IActionResult GetById(int id)
 //=====================================================================================================
 // Gerar Migrations para trabalhar com o SGBD SQL Server
 //=====================================================================================================
-
-
-
-
-
-
-
-
-
-
- -->
