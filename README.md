@@ -1,7 +1,13 @@
 # DevStudyNotes.API
- Esta API manipula as notas de estudo de alunos.
+
+Esta API manipula as notas de estudo de alunos.
 
 Passo a passo para desenvolver a API "DevStudyNotes.API"
+
+_______________________________________________________________________________________________________________
+
+*** API com ASP.NET Core e EF Core ***
+_______________________________________________________________________________________________________________
 
 1 - Esta linha de comando cria um projeto com o template/modelo "webapi"  com o nome "DevStudyNotes.API"
 dotnet new webapi -o DevStudyNotes.API
@@ -430,3 +436,256 @@ public IActionResult GetById(int id)
 //=====================================================================================================
 // Gerar Migrations para trabalhar com o SGBD SQL Server
 //=====================================================================================================
+
+- No arquivo appsettings.json, configurar:
+"ConnectionStrings": {
+    "DevStudyNotes": "Server=DESKTOP-NQL6GK8\\SQLEXPRESS; Database=DbDevStudyNotes2; Integrated Security=True; trustServerCertificate=True"
+  }
+// "DevStudyNotes" é o nome para conexão
+// DbDevStudyNotes2 é o nome para o banco de dados a ser gerado no SQL Server
+
+- No arquivo Program.cs, criar uma variável para acessar a string de conexão "DevStudyNotes"
+// *** SGBD SQL Server ***
+var connectionString = builder.Configuration.GetConnectionString("DevStudyNotes");
+builder.Services.AddDbContext<StudyNoteDbContext>(
+    // Informa a string de conexão "connectionString"
+    o => o.UseSqlServer(connectionString)
+);
+
+- Comentar a configuração para usar BANCO DE DADOS EM MEMÓRIA:
+/*
+// *** BANCO DE DADOS EM MEMÓRIA ***
+builder.Services.AddDbContext<StudyNoteDbContext>(
+    // Nomeia o Database de "StudyNoteDb"
+    o => o.UseInMemoryDatabase("StudyNoteDb")
+);
+*/
+
+28 - No terminal, executar a linha de comando abaixo para crair a Migration:
+// Obs.: O diretório deve ser do projeto
+// Criando a Migration
+dotnet ef migrations add PrimeiraMigration -o Persistence/Migrations
+
+// Executando a migração no SGBD SQL Server
+dotnet ef database update
+
+
+29 - Executar a aplicação
+dotnet run
+
+    - Testar as requisições e repostas com o Swagger e abrir o SQL Server e consultar as tabelas
+    StudyNotes e StudyNoteReactions.
+
+_______________________________________________________________________________________________________________
+
+*** SWAGGER, LOGS e PUBLICAÇÃO NA NUVEM ***
+_______________________________________________________________________________________________________________
+
+* Documentação com Swagger *
+- Além de gerar a documentação de API de forma mais "crua" a partir dos
+  Controllers e Actions, é possível detalhar diversos dados
+- Por exemplo, informações como descrição, parâmetros e códigos de 
+- Com isso, a integração e comunicação entre membros de equipe e outras equipes
+  é bastante facilitada
+
+* O que adiconar ao documentar APIs? *
+- Descrição
+- Exemplo de objeto para envio (POST, PUT)
+- Códigos de resposta possíveis no endpoint
+- Parâmetros e suas descrições
+
+30 - Configuração para gerar arquivo de documentação para o Swagger e também para não ficar recebendo 
+"Warn" por não documentar uma Action, por exemplo.
+No arquivo .csproj adicionar:
+
+<PropertyGroup>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<NoWarn>$(NoWarn);1591</NoWarn>
+</PropertyGroup>
+
+31 - Instalar a extensão C# XML Documentation Comments
+
+32 - Em StudyNotesController.cs:
+
+    - Acima de POST, para gerar uma estrutura de um comentário , pressionar ///
+    - Em <summary>, digitar:
+        - Cadastrar uma nota de estudo
+    - Abaixo de <summary>, adicionar
+        <remarks>
+        { "title": "Estudos AZ-400", "description": "Sobre o Azure Blob Storage", "isPublic": true}
+        </remarks>
+    - Comentário:
+        /// <param name="model">Dados de uma nota de estudo</param>
+    - Comentário:
+        /// <returns>Objeto recém-criado</returns>
+    - Pode-se adicionar um <response> para cada resposta que puder retornar na API:
+        /// <response code="201">Sucesso</response>
+    
+33 - Configurando o Swagger
+
+    - Em Program.cs:
+        - Atualizar o método AddSwaggerGen com dados para documentação/comentários e para geração do arquivo
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("v1", new OpenApiInfo {
+    // Informações sobre a API
+        Title = "DevStudyNotes.API - Notas de estudo",
+        Version = "v1",
+    // Informações de contato do desenvolvedor Janderson Alves de Arantes
+        Contact = new OpenApiContact {
+            Name = "Janderson Alves de Arantes",
+            Email = "janderson_alves@hotmail.com",
+            Url = new Uri("https://www.linkedin.com/in/janderson-alves-arantes-0487367b/")
+        }
+    });
+
+    // Configuração para enviar os comentários para o arquivo XML
+    // Por padrão, usar o NomeDoProjeto.xml
+    var xmlFile = "DevStudyNotes.API.xml";
+    // O caminho do arquivo é o mesmo da pasta base da aplicação
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
+
+
+_______________________________________________________________________________________________________________
+
+*** LOGS com SERILOG ***
+_______________________________________________________________________________________________________________
+
+- Logs representam eventos da aplicação ou infraestrutura, podendo ser 
+armazenados em arquivos físicos, bancos de dados, etc;
+- É recomendável utilizar logs junto a uma ferramente de logs e monitoramento
+mais robusta, já que analisar o log diretamente pode se tornar um problema 
+dependendo do fluxo, e proatividade é essencial na resolulação de erros.
+
+- Serilog é uma biblioteca que permite logging para aplicações .NET 
+- Tem suporte a armazenamento em diversos formatos, como SQL Server,
+SQLite, PostgreSQL, entre outros
+- A biblioteca para ASP.NET Core é a Serilog.AspNetCore
+
+34 - Adicionar 2 pacotes Serilog
+    - CTRL + SHIFT + P >> Open NuGet Gallery
+        // Pacote para registrar os eventos no SQL Server
+        1 - Serilog.Sinks.MSSqlServer
+        2 - Serilog.AspNetCore
+
+35 - Configurar execução do Swagger para publicação
+    Em Program.cs:
+    // A configuração atual executa o Swagger, somente em ambinete de desenvolvimento
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    // Com esta configuração fica garantida a execução do Swagger na publicação também:
+    if (true)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+36 - Configurar o Serilog
+    Em Program.cs:
+// Configurando o Serilog para escrever para o SQL Server e para o Console. 
+// Utilizar a string de conexão connectionString
+// E criar uma tabela no SQL Server com o nome Logs, caso não exista.
+builder.Host.ConfigureAppConfiguration((hostingContext, config) => {
+    Serilog.Log.Logger = new LoggerConfiguration()
+        .Enrich.FromLogContext()
+        .WriteTo.MSSqlServer(connectionString,
+            sinkOptions: new MSSqlServerSinkOptions() {
+                AutoCreateSqlTable = true,
+                TableName = "Logs"
+            })
+        .WriteTo.Console()
+        .CreateLogger();
+}).UseSerilog();
+
+37 - Na Action GetAll(), configurar uma mensagem para que seja registrada no log
+    Log.Information("GetAll is called");
+    // Se lançar uma exceção, ela será escrita no log
+    throw new Exception("GetAll threw an error.");
+
+38 - Testando o funcionamento do Log
+    - No terminal, executar
+        dotnet run
+    - No Swagger, chamar GetAll
+        - Será lançada uma exceção
+    - Abrir o SQL Server e consultar a tabela Logs
+        - Serão apresentados os logs 
+
+_______________________________________________________________________________________________________________
+
+*** PUBLICAÇÃO no MICROSOFT AZURE ***
+_______________________________________________________________________________________________________________
+
+- Para publicação de aplicações ASP.NET Core, o Microsoft Azure oferece, entre outros
+serviços, o Azure App Service
+- Esse serviço tem uma camada gratuita para testes!
+- Uma dica: fique muito atento para não esquecer recursos de testes ativos na sua
+conta, já que pode resulta em uma $urpresa
+
+39 - Acessar https://azure.microsoft.com/pt-br/
+    - Criar um recurso +
+    - Aplicativo Web >> Criar
+    - Nome: APIdoJanderson
+    - Publicar: Código
+    - Pilha de runtime: .NET 7 (STS)
+    - Sistema Operacional: Linux
+    - Plano de preços: F1
+    - Revisar + criar
+    - Criar
+
+40 - Configurar a aplicação para usar BANCO DE DADOS EM MEMÓRIA 
+porque não será utilizado o Microsoft SQL Server no Microsoft Azure
+    - Em GetAll(), comentar as linhas de log
+        // Log.Information("GetAll is called");
+        // Se lançar a uma exceção, ela será escrita no log
+        //throw new Exception("GetAll threw an error.");
+    - Em Progam.cs comentar o código:
+/*
+builder.Host.ConfigureAppConfiguration((hostingContext, config) => {
+    Serilog.Log.Logger = new LoggerConfiguration()
+        .Enrich.FromLogContext()
+        .WriteTo.MSSqlServer(connectionString,
+            sinkOptions: new MSSqlServerSinkOptions() {
+                AutoCreateSqlTable = true,
+                TableName = "Logs"
+            })
+        .WriteTo.Console()
+        .CreateLogger();
+}).UseSerilog();
+*/
+
+    - Comentar:
+/*
+// *** SGBD SQL Server ***
+var connectionString = builder.Configuration.GetConnectionString("DevStudyNotes");
+builder.Services.AddDbContext<StudyNoteDbContext>(
+    // Informa a string de conexão "connectionString"
+    o => o.UseSqlServer(connectionString)
+);
+*/
+
+    - Configurar:
+// *** BANCO DE DADOS EM MEMÓRIA ***
+builder.Services.AddDbContext<StudyNoteDbContext>(
+    // Nomeia o Database de "StudyNoteDb"
+    o => o.UseInMemoryDatabase("StudyNoteDb")
+);
+
+    - Conferir instalação da extensão:
+        - Azure App Service
+    
+41 - Clicar no ícone do Azure (Shift + Alt + A), na barra vertical, no canto esquerdo
+    - Caso tenha algum problema com o Azure:
+	    - CTRL + SHIFT + P
+	    - Azure: Sign Out
+	    - Logar novamente no Azure
+    - Clicar com o botão direito no serviço "APIdoJanderson"
+        - Clicar em "Deploy to Web App..."
+        - Informar o projeto DevStudyNotes.API
+        - Add
+
+
