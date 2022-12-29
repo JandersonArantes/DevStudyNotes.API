@@ -1,4 +1,4 @@
-# DevStudyNotes.API
+DevStudyNotes.API
 
 Esta API manipula as notas de estudo de alunos.
 
@@ -202,7 +202,8 @@ de entrada de dados.
     var studyNote = new StudyNote(model.Title, model.Description, model.IsPublic);
     // Nos próximos passos, estes dados serão armazenados no SGBD
 
-//*******************************************************************************************
+_______________________________________________________________________________________________________________
+
 Para gerar o banco de dados:
 	- Entity Framework Core >> ORM (Object-Relational Mapper) 
 	Métodos que permitem interagir com o BD sem necessitar de código SQL
@@ -239,7 +240,7 @@ Para gerar o banco de dados:
 		- dotnet ef database update
 			- Parâmetro opcional comum: -s
 			-s 
-//*******************************************************************************************
+_______________________________________________________________________________________________________________
 
 // Configurando e utilizando o EF Core
 23 - Instalar alguns pacotes/bibliotecas
@@ -433,9 +434,10 @@ public IActionResult GetById(int id)
 - Cadastrar Reaction para testar
 - Consultar tudo em GET para conferir as notas e reações cadastradas
 
-//=====================================================================================================
-// Gerar Migrations para trabalhar com o SGBD SQL Server
-//=====================================================================================================
+_______________________________________________________________________________________________________________
+
+*** Gerar Migrations para trabalhar com o SGBD SQL Server ***
+_______________________________________________________________________________________________________________
 
 - No arquivo appsettings.json, configurar:
 "ConnectionStrings": {
@@ -686,6 +688,11 @@ builder.Services.AddDbContext<StudyNoteDbContext>(
     - Clicar com o botão direito no serviço "APIdoJanderson"
         - Clicar em "Deploy to Web App..."
         - Informar o projeto DevStudyNotes.API
-        - Add
+    - Acessar o Azure e copiar e acessar a URL para testar a aplicação. 
+        - Obs.: Adiconar "/swagger" no final da URl
+_______________________________________________________________________________________________________________
+
+
+
 
 

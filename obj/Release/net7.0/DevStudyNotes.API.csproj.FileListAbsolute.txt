@@ -5,7 +5,6 @@ C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\bin\Release\net7.0\D
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\bin\Release\net7.0\DevStudyNotes.API.runtimeconfig.json
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\bin\Release\net7.0\DevStudyNotes.API.dll
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\bin\Release\net7.0\DevStudyNotes.API.pdb
-C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\bin\Release\net7.0\DevStudyNotes.API.xml
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\bin\Release\net7.0\Azure.Core.dll
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\bin\Release\net7.0\Azure.Identity.dll
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\bin\Release\net7.0\Humanizer.dll
@@ -83,7 +82,8 @@ C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\obj\Release\net7.0\s
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\obj\Release\net7.0\DevStudyNotes.API.csproj.CopyComplete
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\obj\Release\net7.0\DevStudyNotes.API.dll
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\obj\Release\net7.0\refint\DevStudyNotes.API.dll
-C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\obj\Release\net7.0\DevStudyNotes.API.xml
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\obj\Release\net7.0\DevStudyNotes.API.pdb
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\obj\Release\net7.0\DevStudyNotes.API.genruntimeconfig.cache
 C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\obj\Release\net7.0\ref\DevStudyNotes.API.dll
+C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\bin\Release\net7.0\DevStudyNotes.API.xml
+C:\Users\jande\OneDrive\Documentos\GitHub\DevStudyNotes.API\obj\Release\net7.0\DevStudyNotes.API.xml
