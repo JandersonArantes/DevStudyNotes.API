@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DevStudyNotes.API</name>
+    </assembly>
+    <members>
+        <member name="M:DevStudyNotes.API.Controllers.StudyNotesController.Post(DevStudyNotes.API.Models.AddStudyNoteInputModel)">
+            <summary>
+            Cadastrar uma nota de estudo
+            </summary>
+            <remarks>
+            { "title": "Estudos AZ-400", "description": "Sobre o Azure Blob Storage","isPublic": true }
+            </remarks>
+            <param name="model">Dados de uma nota de estudo</param>
+            <returns>Objeto recém-criado</returns>
+            <response code="201">Sucesso</response>
+        </member>
+        <member name="T:DevStudyNotes.API.Persistence.Migrations.PrimeiraMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:DevStudyNotes.API.Persistence.Migrations.PrimeiraMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:DevStudyNotes.API.Persistence.Migrations.PrimeiraMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:DevStudyNotes.API.Persistence.Migrations.PrimeiraMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
